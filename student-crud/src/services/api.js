@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://localhost:3001/students";
+const API = `${process.env.REACT_APP_API_URL}/students`;
 
 export const getStudents = () => axios.get(API);
 export const addStudent = (data) => axios.post(API, data);
