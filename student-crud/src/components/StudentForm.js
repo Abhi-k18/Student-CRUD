@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "./styles.css";
 
 function StudentForm({ onSubmit, selected }) {
   const [student, setStudent] = useState({
@@ -19,7 +20,7 @@ function StudentForm({ onSubmit, selected }) {
     e.preventDefault();
 
     if (!student.name || !student.email || !student.age) {
-      alert("All fields required");
+      alert("All fields are required");
       return;
     }
 
@@ -29,6 +30,7 @@ function StudentForm({ onSubmit, selected }) {
       return;
     }
 
+    // Convert age to number before submitting
     onSubmit({
       ...student,
       age: Number(student.age)
@@ -38,21 +40,21 @@ function StudentForm({ onSubmit, selected }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="student-form" onSubmit={handleSubmit}>
       <input
+        type="text"
         name="name"
         placeholder="Name"
         value={student.name}
         onChange={handleChange}
       />
-
       <input
+        type="email"
         name="email"
         placeholder="Email"
         value={student.email}
         onChange={handleChange}
       />
-
       <input
         type="number"
         name="age"
@@ -60,8 +62,7 @@ function StudentForm({ onSubmit, selected }) {
         value={student.age}
         onChange={handleChange}
       />
-
-      <button type="submit">Save</button>
+      <button type="submit">{selected ? "Update" : "Add"} Student</button>
     </form>
   );
 }
