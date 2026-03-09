@@ -10,10 +10,16 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   const loadStudents = async () => {
-    setLoading(true);
-    const res = await getStudents();
-    setStudents(res.data);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const res = await getStudents();
+      setStudents(res.data);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to load students");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -21,18 +27,28 @@ function App() {
   }, []);
 
   const handleSubmit = async (data) => {
-    if (data.id) {
-      await updateStudent(data.id, data);
-    } else {
-      await addStudent(data);
+    try {
+      if (data.id) {
+        await updateStudent(data.id, data);
+      } else {
+        await addStudent(data);
+      }
+      setSelected(null);
+      loadStudents();
+    } catch (err) {
+      console.error(err);
+      alert("Operation failed");
     }
-    setSelected(null);
-    loadStudents();
   };
 
   const handleDelete = async (id) => {
-    await deleteStudent(id);
-    loadStudents();
+    try {
+      await deleteStudent(id);
+      loadStudents();
+    } catch (err) {
+      console.error(err);
+      alert("Delete failed");
+    }
   };
 
   return (
@@ -41,13 +57,15 @@ function App() {
 
       <StudentForm onSubmit={handleSubmit} selected={selected}/>
 
-      {loading ? <p>Loading...</p> :
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
         <StudentList
           students={students}
           onEdit={setSelected}
           onDelete={handleDelete}
         />
-      }
+      )}
 
     </div>
   );

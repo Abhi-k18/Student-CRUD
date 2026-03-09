@@ -29,15 +29,38 @@ function StudentForm({ onSubmit, selected }) {
       return;
     }
 
-    onSubmit(student);
+    onSubmit({
+      ...student,
+      age: Number(student.age)
+    });
+
     setStudent({ name: "", email: "", age: "" });
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <input name="name" placeholder="Name" value={student.name} onChange={handleChange}/>
-      <input name="email" placeholder="Email" value={student.email} onChange={handleChange}/>
-      <input name="age" placeholder="Age" value={student.age} onChange={handleChange}/>
+      <input
+        name="name"
+        placeholder="Name"
+        value={student.name}
+        onChange={handleChange}
+      />
+
+      <input
+        name="email"
+        placeholder="Email"
+        value={student.email}
+        onChange={handleChange}
+      />
+
+      <input
+        type="number"
+        name="age"
+        placeholder="Age"
+        value={student.age}
+        onChange={handleChange}
+      />
+
       <button type="submit">Save</button>
     </form>
   );
